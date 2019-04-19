@@ -6,9 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceApp.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ValuesController : ControllerBase
+    [Route("api/basket")]
+    public class BasketController : ControllerBase
     {
         // GET api/values
         [HttpGet]

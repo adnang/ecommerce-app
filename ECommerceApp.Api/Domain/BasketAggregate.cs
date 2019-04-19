@@ -10,21 +10,18 @@ namespace ECommerceApp.Api.Domain
     {
         public string Id { get; }
 
-        public string CustomerId { get; }
-
         public List<ProductItem> Products { get; } = new List<ProductItem>();
 
         public bool HasBeenUpdated { get; set; }
 
-        public BasketAggregate(string id, string customerId)
+        public BasketAggregate(string id)
         {
-            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(customerId))
+            if (string.IsNullOrEmpty(id))
             {
                 throw new ArgumentNullException();
             }
 
             Id = id;
-            CustomerId = customerId;
         }
 
         public void Apply(AddItemCommand command)

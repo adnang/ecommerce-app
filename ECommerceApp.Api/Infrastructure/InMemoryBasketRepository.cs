@@ -11,14 +11,13 @@ namespace ECommerceApp.Api.Infrastructure
     {
         private static readonly MemoryCache Cache = new MemoryCache(new MemoryCacheOptions());
 
-        public async Task<BasketAggregate> LoadByCustomer(string customerId, CancellationToken cancellationToken)
+        public async Task<BasketAggregate> Load(string id, CancellationToken cancellationToken)
         {
             return await Task.FromResult(Cache.GetOrCreate(
-                customerId,
+                id,
                 entry => new BasketAggregate
                 (
-                    Guid.NewGuid().ToString(),
-                    customerId
+                    id
                 )));
         }
 
@@ -26,7 +25,7 @@ namespace ECommerceApp.Api.Infrastructure
         {
             if (basketAggregate.HasBeenUpdated)
             {
-                Cache.Set(basketAggregate.CustomerId, basketAggregate);
+                Cache.Set(basketAggregate.Id, basketAggregate);
             }
 
             await Task.CompletedTask;

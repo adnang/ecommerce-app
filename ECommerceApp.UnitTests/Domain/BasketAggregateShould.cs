@@ -32,25 +32,21 @@ namespace ECommerceApp.UnitTests.Domain
         [Fact]
         public void BeInitialized_GivenValidConstructor()
         {
-            var basketAggregate = new BasketAggregate(AggregateId, CustomerId);
+            var basketAggregate = new BasketAggregate(AggregateId);
             basketAggregate.Id.Should().Be(AggregateId);
-            basketAggregate.CustomerId.Should().Be(CustomerId);
         }
 
-        [Theory]
-        [InlineData(null, CustomerId)]
-        [InlineData(AggregateId, null)]
-        [InlineData(null, null)]
-        public void ThrowException_GivenInvalidConstructor(string id, string customerId)
+        [Fact]
+        public void ThrowException_GivenInvalidConstructor()
         {
-            Action action = () => new BasketAggregate(id, customerId);
+            Action action = () => new BasketAggregate(null);
             action.Should().Throw<ArgumentNullException>();
         }
 
         [Fact]
         public void BeUpdated_WhenAddingNewProduct()
         {
-            var basketAggregate = new BasketAggregate(AggregateId, CustomerId);
+            var basketAggregate = new BasketAggregate(AggregateId);
 
             basketAggregate.Apply(_addItemCommand);
 
@@ -63,7 +59,7 @@ namespace ECommerceApp.UnitTests.Domain
         [Fact]
         public void BeIdempotent_WhenAddingExistingProduct()
         {
-            var basketAggregate = new BasketAggregate(AggregateId, CustomerId);
+            var basketAggregate = new BasketAggregate(AggregateId);
 
             basketAggregate.Apply(_addItemCommand);
             basketAggregate.HasBeenUpdated = false;
@@ -78,7 +74,7 @@ namespace ECommerceApp.UnitTests.Domain
         [Fact]
         public void BeUpdated_WhenUpdatingExistingProduct()
         {
-            var basketAggregate = new BasketAggregate(AggregateId, CustomerId);
+            var basketAggregate = new BasketAggregate(AggregateId);
             basketAggregate.Apply(_addItemCommand);
             basketAggregate.HasBeenUpdated = false;
 
@@ -92,7 +88,7 @@ namespace ECommerceApp.UnitTests.Domain
         [Fact]
         public void ThrowException_WhenUpdatingNonExistingProduct()
         {
-            var basketAggregate = new BasketAggregate(AggregateId, CustomerId);
+            var basketAggregate = new BasketAggregate(AggregateId);
             basketAggregate.Apply(_addItemCommand);
             basketAggregate.HasBeenUpdated = false;
 
@@ -108,7 +104,7 @@ namespace ECommerceApp.UnitTests.Domain
         [Fact]
         public void BeIdempotent_WhenUpdatingToTheSameQuantity()
         {
-            var basketAggregate = new BasketAggregate(AggregateId, CustomerId);
+            var basketAggregate = new BasketAggregate(AggregateId);
             basketAggregate.Apply(_addItemCommand);
             basketAggregate.Apply(_updateItemCommand);
             basketAggregate.HasBeenUpdated = false;
@@ -123,7 +119,7 @@ namespace ECommerceApp.UnitTests.Domain
         [Fact]
         public void BeUpdated_WhenRemovingAnExistingItem()
         {
-            var basketAggregate = new BasketAggregate(AggregateId, CustomerId);
+            var basketAggregate = new BasketAggregate(AggregateId);
             basketAggregate.Apply(_addItemCommand);
             basketAggregate.HasBeenUpdated = false;
 
@@ -139,7 +135,7 @@ namespace ECommerceApp.UnitTests.Domain
         [Fact]
         public void BeIdempotent_WhenRemovingNonExistingItem()
         {
-            var basketAggregate = new BasketAggregate(AggregateId, CustomerId);
+            var basketAggregate = new BasketAggregate(AggregateId);
             basketAggregate.Apply(new RemoveItemCommand
             {
                 Sku = _addItemCommand.Sku
