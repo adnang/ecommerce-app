@@ -10,7 +10,7 @@ namespace ECommerceApp.Api.Domain
     {
         public string Id { get; }
 
-        public List<ProductItem> Products { get; } = new List<ProductItem>();
+        public List<ProductItem> Items { get; } = new List<ProductItem>();
 
         public bool HasBeenUpdated { get; set; }
 
@@ -26,12 +26,12 @@ namespace ECommerceApp.Api.Domain
 
         public void Apply(AddItemCommand command)
         {
-            if (Products.Any(item => item.Sku == command.Sku))
+            if (Items.Any(item => item.Sku == command.Sku))
             {
                 return;
             }
 
-            Products.Add(new ProductItem
+            Items.Add(new ProductItem
             {
                 Sku = command.Sku,
                 Description = command.Description
@@ -42,7 +42,7 @@ namespace ECommerceApp.Api.Domain
 
         public void Apply(UpdateItemCommand command)
         {
-            var product = Products.SingleOrDefault(item => item.Sku == command.Sku);
+            var product = Items.SingleOrDefault(item => item.Sku == command.Sku);
             if (product == null)
             {
                 throw new BasketDoesNotContainProductException();
@@ -59,14 +59,25 @@ namespace ECommerceApp.Api.Domain
 
         public void Apply(RemoveItemCommand command)
         {
-            var product = Products.SingleOrDefault(item => item.Sku == command.Sku);
+            var product = Items.SingleOrDefault(item => item.Sku == command.Sku);
 
             if (product == null)
             {
                 return;
             }
             
-            Products.Remove(product);
+            Items.Remove(product);
+            HasBeenUpdated = true;
+        }
+
+        public void Apply(ClearItemsCommand command)
+        {
+            if (Items.Count == 0)
+            {
+                return;
+            }
+
+            Items.Clear();
             HasBeenUpdated = true;
         }
     }
