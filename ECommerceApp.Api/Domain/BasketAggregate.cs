@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ECommerceApp.Api.Domain.Commands;
+using ECommerceApp.Api.Domain.Exceptions;
 
 namespace ECommerceApp.Api.Domain
 {
@@ -39,6 +40,23 @@ namespace ECommerceApp.Api.Domain
                 Description = command.Description
             });
 
+            HasBeenUpdated = true;
+        }
+
+        public void Apply(UpdateItemCommand command)
+        {
+            var product = Products.SingleOrDefault(item => item.Sku == command.Sku);
+            if (product == null)
+            {
+                throw new BasketDoesNotContainProductException();
+            }
+
+            if (product.Quantity == command.Quantity)
+            {
+                return;
+            }
+
+            product.Quantity = command.Quantity;
             HasBeenUpdated = true;
         }
     }

@@ -1,6 +1,7 @@
 using System;
 using ECommerceApp.Api.Domain;
 using ECommerceApp.Api.Domain.Commands;
+using ECommerceApp.Api.Domain.Exceptions;
 using FluentAssertions;
 using Xunit;
 
@@ -8,9 +9,26 @@ namespace ECommerceApp.UnitTests.Domain
 {
     public class BasketAggregateShould
     {
+        private readonly AddItemCommand _addItemCommand;
+        private readonly UpdateItemCommand _updateItemCommand;
         private const string CustomerId = "CustomerId";
         private const string AggregateId = "AggregateId";
 
+        public BasketAggregateShould()
+        {
+            _addItemCommand = new AddItemCommand
+            {
+                Sku = "12345",
+                Description = "Product Description"
+            };
+            
+            _updateItemCommand = new UpdateItemCommand    
+            {
+                Sku = "12345",
+                Quantity = 2
+            };
+        }
+        
         [Fact]
         public void BeInitialized_GivenValidConstructor()
         {
@@ -25,7 +43,8 @@ namespace ECommerceApp.UnitTests.Domain
         [InlineData(null, null)]
         public void ThrowException_GivenInvalidConstructor(string id, string customerId)
         {
-            Assert.Throws<ArgumentNullException>(() => new BasketAggregate(id, customerId));
+            Action action  = () => new BasketAggregate(id, customerId);
+            action.Should().Throw<ArgumentNullException>();
         }
         
         [Fact]
@@ -33,18 +52,12 @@ namespace ECommerceApp.UnitTests.Domain
         {
             var basketAggregate = new BasketAggregate(AggregateId, CustomerId);
 
-            var addItemCommand = new AddItemCommand
-            {
-                Sku = "12345",
-                Description = "Product Description"
-            };
-            
-            basketAggregate.Apply(addItemCommand);
+            basketAggregate.Apply(_addItemCommand);
 
             basketAggregate.HasBeenUpdated.Should().BeTrue();
             basketAggregate.Products.Should()
                 .ContainSingle(item => item.Quantity == 1)
-                .And.AllBeEquivalentTo(addItemCommand);
+                .And.AllBeEquivalentTo(_addItemCommand);
         }
 
         [Fact]
@@ -52,20 +65,59 @@ namespace ECommerceApp.UnitTests.Domain
         {
             var basketAggregate = new BasketAggregate(AggregateId, CustomerId);
 
-            var addItemCommand = new AddItemCommand
-            {
-                Sku = "12345",
-                Description = "Product Description"
-            };
-            
-            basketAggregate.Apply(addItemCommand);
+            basketAggregate.Apply(_addItemCommand);
             basketAggregate.HasBeenUpdated = false;
             
-            basketAggregate.Apply(addItemCommand);
+            basketAggregate.Apply(_addItemCommand);
 
             basketAggregate.Products.Should()
                 .ContainSingle(item => item.Quantity == 1);
             basketAggregate.HasBeenUpdated.Should().BeFalse();
+        }
+
+        [Fact]
+        public void BeUpdated_WhenUpdatingExistingProduct()
+        {
+            var basketAggregate = new BasketAggregate(AggregateId, CustomerId);
+            basketAggregate.Apply(_addItemCommand);
+            basketAggregate.HasBeenUpdated = false;
+            
+            basketAggregate.Apply(_updateItemCommand);
+
+            basketAggregate.HasBeenUpdated.Should().BeTrue();
+            basketAggregate.Products.Should().ContainSingle(
+                item => item.Sku == _addItemCommand.Sku && item.Quantity == _updateItemCommand.Quantity);
+        }
+        
+        [Fact]
+        public void ThrowException_WhenUpdatingNonExistingProduct()
+        {
+            var basketAggregate = new BasketAggregate(AggregateId, CustomerId);
+            basketAggregate.Apply(_addItemCommand);
+            basketAggregate.HasBeenUpdated = false;
+
+            Action action = () => basketAggregate.Apply(new UpdateItemCommand
+            {
+                Sku = "54321",
+                Quantity = 2
+            });
+
+            action.Should().Throw<BasketDoesNotContainProductException>();
+        }
+        
+        [Fact]
+        public void BeIdempotent_WhenUpdatingToTheSameQuantity()
+        {
+            var basketAggregate = new BasketAggregate(AggregateId, CustomerId);
+            basketAggregate.Apply(_addItemCommand);
+            basketAggregate.Apply(_updateItemCommand);
+            basketAggregate.HasBeenUpdated = false;
+
+            basketAggregate.Apply(_updateItemCommand);
+            
+            basketAggregate.HasBeenUpdated.Should().BeFalse();
+            basketAggregate.Products.Should().ContainSingle(
+                item => item.Sku == _addItemCommand.Sku && item.Quantity == _updateItemCommand.Quantity);
         }
     }
 }
