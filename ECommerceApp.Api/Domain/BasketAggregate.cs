@@ -59,6 +59,19 @@ namespace ECommerceApp.Api.Domain
             product.Quantity = command.Quantity;
             HasBeenUpdated = true;
         }
+
+        public void Apply(RemoveItemCommand command)
+        {
+            var product = Products.SingleOrDefault(item => item.Sku == command.Sku);
+
+            if (product == null)
+            {
+                return;
+            }
+            
+            Products.Remove(product);
+            HasBeenUpdated = true;
+        }
     }
 
     public class ProductItem
