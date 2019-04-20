@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using ECommerceApp.Api.Domain.Commands;
+using ECommerceApp.Api.Domain.Interfaces;
+using ECommerceApp.Api.Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceApp.Api.Controllers
@@ -9,36 +10,58 @@ namespace ECommerceApp.Api.Controllers
     [Route("api/basket")]
     public class BasketController : ControllerBase
     {
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] {"value1", "value2"};
-        }
+        private readonly IBasketRepository _repository;
 
-        // GET api/values/5
+        public BasketController(IBasketRepository repository)
+        {
+            _repository = repository;
+        }
+        
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public async Task<IActionResult> Get(string id, CancellationToken cancellationToken)
         {
-            return "value";
+            var basketAggregate = await _repository.Load(id, cancellationToken);
+            return Ok(basketAggregate.MapToDto());
         }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPut("{id}/items/add")]
+        public async Task<IActionResult> AddItem(string id, [FromBody] AddItemCommand command, CancellationToken cancellationToken)
         {
+            var basketAggregate = await _repository.Load(id, cancellationToken);
+            basketAggregate.Apply(command);
+            await _repository.Save(basketAggregate, cancellationToken);
+
+            return Ok();
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("{id}/items/update")]
+        public async Task<IActionResult> UpdateItem(string id, [FromBody] UpdateItemCommand command, CancellationToken cancellationToken)
         {
+            var basketAggregate = await _repository.Load(id, cancellationToken);
+            basketAggregate.Apply(command);
+            await _repository.Save(basketAggregate, cancellationToken);
+
+            return Ok();
         }
 
-        // DELETE api/values/5
+        [HttpPut("{id}/items/remove")]
+        public async Task<IActionResult> RemoveItem(string id, [FromBody] RemoveItemCommand command, CancellationToken cancellationToken)
+        {
+            var basketAggregate = await _repository.Load(id, cancellationToken);
+            basketAggregate.Apply(command);
+            await _repository.Save(basketAggregate, cancellationToken);
+
+            return Ok();            
+        }
+        
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> ClearItems(string id, CancellationToken cancellationToken)
         {
+            var basketAggregate = await _repository.Load(id, cancellationToken);
+            basketAggregate.Apply(new ClearItemsCommand());
+            await _repository.Save(basketAggregate, cancellationToken);
+
+            return Ok();            
         }
     }
 }

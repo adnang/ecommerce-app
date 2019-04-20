@@ -1,11 +1,10 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using ECommerceApp.Api.Domain;
 using ECommerceApp.Api.Domain.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace ECommerceApp.Api.Infrastructure
+namespace ECommerceApp.Api.Infrastructure.Repositories
 {
     public class InMemoryBasketRepository : IBasketRepository
     {
