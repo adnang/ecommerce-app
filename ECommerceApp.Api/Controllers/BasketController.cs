@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using ECommerceApp.Api.Domain.Commands;
 using ECommerceApp.Api.Domain.Interfaces;
-using ECommerceApp.Api.Infrastructure.Models;
+using ECommerceApp.Api.Infrastructure.Mapping;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceApp.Api.Controllers

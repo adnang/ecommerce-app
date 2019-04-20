@@ -4,6 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerceApp.Api", "ECommer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerceApp.UnitTests", "ECommerceApp.UnitTests\ECommerceApp.UnitTests.csproj", "{F245F1DD-88B1-4A6E-BA7D-87A07218FD3C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerceApp.Client", "ECommerceApp.Client\ECommerceApp.Client.csproj", "{7120F0A8-C49B-44CC-A5EF-57214A67CE3B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerceApp.Contracts", "ECommerceApp.Contracts\ECommerceApp.Contracts.csproj", "{73B0F44F-B6EA-4A73-8B08-9B8FF9971129}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{F245F1DD-88B1-4A6E-BA7D-87A07218FD3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F245F1DD-88B1-4A6E-BA7D-87A07218FD3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F245F1DD-88B1-4A6E-BA7D-87A07218FD3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7120F0A8-C49B-44CC-A5EF-57214A67CE3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7120F0A8-C49B-44CC-A5EF-57214A67CE3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7120F0A8-C49B-44CC-A5EF-57214A67CE3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7120F0A8-C49B-44CC-A5EF-57214A67CE3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73B0F44F-B6EA-4A73-8B08-9B8FF9971129}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73B0F44F-B6EA-4A73-8B08-9B8FF9971129}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73B0F44F-B6EA-4A73-8B08-9B8FF9971129}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73B0F44F-B6EA-4A73-8B08-9B8FF9971129}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

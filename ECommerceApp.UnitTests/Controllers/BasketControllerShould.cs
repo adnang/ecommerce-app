@@ -5,7 +5,7 @@ using ECommerceApp.Api.Controllers;
 using ECommerceApp.Api.Domain;
 using ECommerceApp.Api.Domain.Commands;
 using ECommerceApp.Api.Domain.Interfaces;
-using ECommerceApp.Api.Infrastructure.Models;
+using ECommerceApp.Contracts.Response;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -90,7 +90,7 @@ namespace ECommerceApp.UnitTests.Controllers
             var response = await _controller.Get(Id, CancellationToken.None);
 
             var result = response.Should().BeAssignableTo<ObjectResult>().Subject;
-            var basketDto = result.Value.Should().BeOfType<BasketDto>().Subject;
+            var basketDto = result.Value.Should().BeOfType<BasketResponse>().Subject;
             basketDto.Id.Should().Be(Id);
             basketDto.Items.Should().ContainSingle(x => x.Description == "desc" && x.Sku == "sku" && x.Quantity == 1);
         }

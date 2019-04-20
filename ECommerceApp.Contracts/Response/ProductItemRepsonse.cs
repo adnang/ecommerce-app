@@ -1,6 +1,6 @@
-namespace ECommerceApp.Api.Infrastructure.Models
+﻿namespace ECommerceApp.Contracts.Response
 {
-    public class ProductDto
+    public class ProductItemRepsonse
     {
         public string Sku { get; set; }
         public string Description { get; set; }
