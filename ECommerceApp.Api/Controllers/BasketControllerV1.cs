@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceApp.Api.Controllers
 {
-    [Route("api/basket")]
-    public class BasketController : ControllerBase
+    [Route("api/v1/basket")]
+    public class BasketControllerV1 : ControllerBase
     {
         private readonly IBasketRepository _repository;
 
-        public BasketController(IBasketRepository repository)
+        public BasketControllerV1(IBasketRepository repository)
         {
             _repository = repository;
         }

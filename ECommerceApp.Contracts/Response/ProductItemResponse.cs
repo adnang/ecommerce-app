@@ -1,6 +1,6 @@
 ﻿namespace ECommerceApp.Contracts.Response
 {
-    public class ProductItemRepsonse
+    public class ProductItemResponse
     {
         public string Sku { get; set; }
         public string Description { get; set; }

@@ -18,7 +18,7 @@ namespace ECommerceApp.UnitTests.Controllers
         private const string Id = "id";
         private readonly Mock<IBasketRepository> _repositoryMock;
         private readonly BasketAggregate _basketAggregate;
-        private readonly BasketController _controller;
+        private readonly BasketControllerV1 _controller;
 
         public BasketControllerShould()
         {
@@ -27,7 +27,7 @@ namespace ECommerceApp.UnitTests.Controllers
             _repositoryMock.Setup(r => r.Load(It.Is<string>(x => x == Id), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(_basketAggregate);
 
-            _controller = new BasketController(_repositoryMock.Object);
+            _controller = new BasketControllerV1(_repositoryMock.Object);
         }
 
         [Fact]

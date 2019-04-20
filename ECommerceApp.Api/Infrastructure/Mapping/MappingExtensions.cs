@@ -15,9 +15,9 @@ namespace ECommerceApp.Api.Infrastructure.Mapping
             };
         }
 
-        private static ProductItemRepsonse MapToDto(ProductItem item)
+        private static ProductItemResponse MapToDto(ProductItem item)
         {
-            return new ProductItemRepsonse()
+            return new ProductItemResponse()
             {
                 Sku = item.Sku,
                 Description = item.Description,

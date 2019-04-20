@@ -25,7 +25,7 @@ namespace ECommerceApp.Client
         public async Task<BasketResponse> GetBasket(string id, CancellationToken cancellationToken)
         {
             var httpRequestMessage =
-                new HttpRequestMessage(HttpMethod.Get, $"/api/basket/{id}");
+                new HttpRequestMessage(HttpMethod.Get, $"/api/v1/basket/{id}");
 
             var responseMessage = await _httpClient.SendAsync(httpRequestMessage, cancellationToken);
 
@@ -37,7 +37,7 @@ namespace ECommerceApp.Client
         public async Task AddProduct(string id, AddProductRequest request, CancellationToken cancellationToken)
         {
             var httpRequestMessage =
-                new HttpRequestMessage(HttpMethod.Put, $"/api/basket/{id}/items/add")
+                new HttpRequestMessage(HttpMethod.Put, $"/api/v1/basket/{id}/items/add")
                 {
                     Content = new StringContent(JsonConvert.SerializeObject(request))
                 };
@@ -49,7 +49,7 @@ namespace ECommerceApp.Client
         public async Task UpdateProduct(string id, UpdateProductRequest request, CancellationToken cancellationToken)
         {
             var httpRequestMessage =
-                new HttpRequestMessage(HttpMethod.Put, $"/api/basket/{id}/items/update")
+                new HttpRequestMessage(HttpMethod.Put, $"/api/v1/basket/{id}/items/update")
                 {
                     Content = new StringContent(JsonConvert.SerializeObject(request))
                 };
@@ -61,7 +61,7 @@ namespace ECommerceApp.Client
         public async Task RemoveProduct(string id, RemoveProductRequest request, CancellationToken cancellationToken)
         {
             var httpRequestMessage =
-                new HttpRequestMessage(HttpMethod.Put, $"/api/basket/{id}/items/remove")
+                new HttpRequestMessage(HttpMethod.Put, $"/api/v1/basket/{id}/items/remove")
                 {
                     Content = new StringContent(JsonConvert.SerializeObject(request))
                 };
@@ -73,7 +73,7 @@ namespace ECommerceApp.Client
         public async Task ClearItems(string id, CancellationToken cancellationToken)
         {
             var httpRequestMessage =
-                new HttpRequestMessage(HttpMethod.Delete, $"/api/basket/{id}");
+                new HttpRequestMessage(HttpMethod.Delete, $"/api/v1/basket/{id}");
 
             var responseMessage = await _httpClient.SendAsync(httpRequestMessage, cancellationToken);
             responseMessage.EnsureSuccessStatusCode();

@@ -3,6 +3,6 @@
     public class BasketResponse
     {
         public string Id { get; set; }
-        public ProductItemRepsonse[] Items { get; set; }
+        public ProductItemResponse[] Items { get; set; }
     }
 }
