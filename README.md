@@ -8,7 +8,11 @@ An example shopping cart API and Client, written in ASP.Net Core 2.2.
   - the update method throws is the product isn't already in the basket, since the idempotency key is on the sku and quantity, not the description
 
 ### Given extra time, I would
-- implement HATEOS to add links to the other available operations
+- implement HATEOAS to add links to the other available operations in responses
+- introduce the customer concept the API:
+  - GET and PUT operations to read basket by customer, returning a 404 if a basket doesn't exist on the GET, and PUT has upsert semantics
+  - assuming a customer could have multiple baskets assigned, this would require data access with multiple indexes to key on both basketId and customerId
+- add authentication for customers using JWT tokens 
 - map request DTOs to the commands
 - introduce a command executor layer between the controllers and the domain 
   - the Mediatr library is a possible implementation of this
