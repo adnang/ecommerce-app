@@ -9,7 +9,7 @@ An example shopping cart API and Client, written in ASP.Net Core 2.2.
 
 ### Given extra time, I would
 - implement HATEOAS to add links to the other available operations in responses
-- introduce the customer concept the API:
+- introduce the customer concept to the API:
   - GET and PUT operations to read basket by customer, returning a 404 if a basket doesn't exist on the GET, and PUT has upsert semantics
   - assuming a customer could have multiple baskets assigned, this would require data access with multiple indexes to key on both basketId and customerId
 - add authentication for customers using JWT tokens 
